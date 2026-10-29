@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Media Integrity Verification</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#f3f5f9;color:#172033;margin:0}
+    main{max-width:820px;margin:40px auto;padding:24px}
+    .panel{background:white;padding:24px;border-radius:16px;box-shadow:0 5px 22px #17203312;margin-bottom:18px}
+    h1{margin-top:0} textarea{width:100%;min-height:150px;padding:12px;box-sizing:border-box;border:1px solid #cbd2df;border-radius:8px;font:inherit}
+    button{margin-top:12px;background:#1d4ed8;color:white;border:0;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
+    .label{font-weight:bold;text-transform:uppercase} .warning{background:#fff7df;padding:12px;border-radius:8px}
+    .error{color:#a11} code{overflow-wrap:anywhere;word-break:break-word}
+    small{color:#5d6678}
+  </style>
+</head>
+<body>
+<main>
+  <section class="panel">
+    <h1>Media Integrity Verification</h1>
+    <p>Enter a news claim or social media text to see a prototype NLP classification.</p>
+    <p class="warning"><strong>Prototype warning:</strong> This model uses a tiny illustrative sample dataset. Its predictions are not fact-checking and must not be treated as proof.</p>
+    <form method="post">
+      <label for="news_text"><strong>Text to verify</strong></label>
+      <textarea id="news_text" name="news_text" maxlength="10000" required>{{ text }}</textarea>
+      <button type="submit">Analyze text</button>
+    </form>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  </section>
+  {% if result %}
+  <section class="panel">
+    <h2>Verification result</h2>
+    <p class="label">{{ result.prediction }}</p>
+    <p>Model authentic probability: <strong>{{ result.authentic_probability }}%</strong></p>
+    <p>Model fake probability: <strong>{{ result.fake_probability }}%</strong></p>
+    <p>Demo credibility score: <strong>{{ result.credibility_score }}/100</strong></p>
+    <p>{{ result.explanation }}</p>
+    <h3>Local audit record</h3>
+    <p><small>UTC timestamp</small><br>{{ result.timestamp_utc }}</p>
+    <p><small>Input SHA-256</small><br><code>{{ result.input_sha256 }}</code></p>
+    <p><small>Record hash</small><br><code>{{ result.record_hash }}</code></p>
+    <small>This is a local hash-linked log, not a blockchain transaction.</small>
+  </section>
+  {% endif %}
+  <section class="panel"><small>Educational demonstration only. Verify claims independently with trustworthy sources.</small></section>
+</main>
+</body>
+</html>
